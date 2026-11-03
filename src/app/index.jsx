@@ -2,24 +2,33 @@ import {Text,TextInput,Button,Alert,View,Image,StyleSheet} from "react-native";
 import React, {useState} from "react";
 export default function Index(){
    const [texto,setDuvida] = useState('');
-   const enviarDuvida = async() =>{
-      try{
-         const response = await fetch('http://localhost:8080/duvida',{
-            method:'POST',
-            headers:{
-               'Content-Type':'application/json',
+   
+const enviarDuvida = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/duvida', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            body:JSON.stringify({texto}),
-         });
-         Alert.alert("Dúvida enviada com sucesso!");
+            body: JSON.stringify({ texto }),
+        });
 
-      }catch(error){
-         Alert.alert("Erro ao enviar dúvida");
-      }
-   }
+        if (response.ok) {
+            alert("Dúvida enviada com sucesso!");
+            setDuvida("");
+        } else {
+            alert("Erro do servidor: " + response.status);
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Erro de conexão: " + error.message);
+    }
+};
+
     return(
        <View style={styles.container}>
-       
+        
            <Text style={styles.text}>Pomonai APP</Text>
            <TextInput
              style={styles.input}
